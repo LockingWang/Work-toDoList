@@ -47,10 +47,6 @@ table {
 	border-spacing: 0;
 }
 
-
-@import url("https://fonts.googleapis.com/earlyaccess/notosanstc.css");
-@import url("https://fonts.googleapis.com/css?family=Baloo+Tamma+2:600, 700");
-
 * {
   box-sizing: border-box;
 }
@@ -166,25 +162,17 @@ input[type="text"]::placeholder {
 
 .cart_content {
   padding: 0.5rem 1rem 1rem 1rem;
-  @media (max-width: 575px) {
-    padding: 0.5rem 1rem 0.5rem 0.5rem;
-  }
+}
+
+@media (max-width: 575px) {
+    .cart_content {
+        padding: 0.5rem 1rem 0.5rem 0.5rem;
+    }
 }
 
 .list li {
     position: relative;
     padding-right: 2rem;
-}
-
-@media (max-width: 575px) {
-    .list li {
-        padding-right: 0;
-    }
-    .list li .delete {
-        opacity: 1;
-        width: 12px;
-        height: 12px;
-    }
 }
 
 .list li .delete {
@@ -207,6 +195,16 @@ input[type="text"]::placeholder {
     opacity: 1;
 }
 
+@media (max-width: 575px) {
+    .list li {
+        padding-right: 0;
+    }
+    .list li .delete {
+        opacity: 1;
+        width: 12px;
+        height: 12px;
+    }
+}
 
 .list_footer {
   display: flex;
@@ -225,7 +223,7 @@ input[type="text"]::placeholder {
     .list_footer{
         padding: 1.5rem 0 1rem 0.5rem;
     }
-  }
+}
 
 .checkbox {
   position: relative;
