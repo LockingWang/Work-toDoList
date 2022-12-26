@@ -90,12 +90,12 @@ const txt = document.querySelector(".txt");
 
 cardInput.addEventListener("click",function(e){
     if (e.target.getAttribute("class") == "btn_add"){
-        if (txt.value == ""){
+        if (txt.value.trim() == ""){
             alert("請輸入待辦事項!");
             return;
         }
         let obj = {};
-        obj.content = txt.value;
+        obj.content = txt.value.trim();
         obj.checked = "";
         data.push(obj);
         addList();
