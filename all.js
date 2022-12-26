@@ -168,7 +168,6 @@ card_list.addEventListener("click",function(e){
 card_list.addEventListener("click",function(e){
     const clear = document.querySelector(".clear");
     if (e.target.getAttribute("class") !== "clear") {
-        console.log("無效");
         return;
     };
     let undoData = data.filter(function(item){
