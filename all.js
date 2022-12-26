@@ -98,6 +98,7 @@ cardInput.addEventListener("click",function(e){
         obj.content = txt.value.trim();
         obj.checked = "";
         data.push(obj);
+        tabPage = "all";
         addList();
         txt.value = "";
     };
@@ -113,6 +114,7 @@ cardInput.addEventListener("keyup",function(e){
             obj.content = txt.value.trim();
             obj.checked = "";
             data.push(obj);
+            tabPage = "all";
             addList();
             txt.value = "";
         }
