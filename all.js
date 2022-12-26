@@ -104,16 +104,20 @@ cardInput.addEventListener("click",function(e){
 });//滑鼠新增
 
 cardInput.addEventListener("keyup",function(e){
-    if(txt.value == ""){
-        alert("請輸入待辦事項!");
+    if( e.key === "Enter"){
+        if(txt.value.trim() == ""){
+            alert("請輸入待辦事項!");
+            return;
+        }else if(e.key == "Enter"){
+            let obj = {};
+            obj.content = txt.value.trim();
+            obj.checked = "";
+            data.push(obj);
+            addList();
+            txt.value = "";
+        }
+    }else {
         return;
-    }else if(e.key == "Enter"){
-        let obj = {};
-        obj.content = txt.value;
-        obj.checked = "";
-        data.push(obj);
-        addList();
-        txt.value = "";
     }
 });//Enter新增
 
