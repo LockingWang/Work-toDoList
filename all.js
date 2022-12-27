@@ -1,3 +1,60 @@
+// 網頁切換內容
+let pageNow = "logInPage";
+
+function checkPage(){
+    if(pageNow === "logInPage"){
+        body.innerHTML = `    <div class="logInPage">
+        <div class="leftPart">
+          <div class="topIcon">
+            <img src="./img/Vectorheadicon2.png" alt="box">
+            <img src="./img/Vectorheadicon1.png" alt="correctIcon" class="correctIcon">
+            <img src="./img/ONLINE TODO LISTlogo.png" alt="headWord">
+          </div>
+          <div class="downIcon">
+            <img src="./img/imgheadimg.png" alt="manWithPen">
+          </div>
+        </div>
+        <div class="rightPart">
+          <h2>最實用的線上待辦事項服務</h2>
+          <label>
+            <p class="word">Email</p>
+            <input class="inputBox" type="email" placeholder="請輸入Email">
+            <p class="homeInputAlert">此欄位不可為空白值</p>
+          </label>
+          <label>
+            <p class="word">密碼</p>
+            <input class="inputBox" type="password" placeholder="請輸入密碼">
+            <p class="homeInputAlert">此欄位不可為空白值</p>
+          </label>
+          <div class="btnGroup">
+            <input class="logInBtn" type="button" value="登入" />
+            <p class="registBtn">註冊帳號</p>
+          </div>
+        </div>
+      </div>
+      <script src="all.js"></script>`
+    }
+};
+
+// 要有ID才能轉換到個人的todolist
+let token = "";
+const body = document.querySelector(".body");
+function checkID (){
+    if (token !== ""){
+        body.innerHTML = `<div class="listPage_background"></div>
+        <div class="listPage">
+          <h1>TODO LIST</h1>
+            <div class="card input">
+              <input class="txt" type="text" placeholder="請輸入待辦事項" />
+              <a href="#" class="btn_add">+</a>
+            </div>
+            <div class="card card_list">
+              
+            </div>
+        </div>
+        <script src="all.js"></script>`
+    }
+};
 // 變數專區
 const list = document.querySelector(".list");
 const card_list = document.querySelector(".card_list");

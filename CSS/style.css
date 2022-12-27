@@ -66,14 +66,7 @@ body {
   background: #eee;
   display: flex;
   color: var(--dark);
-  background-image: linear-gradient(
-    174deg,
-    var(--default) 2%,
-    var(--default) 46%,
-    #ffffff 46%,
-    #ffffff 100%,
-    #e8e8e8 100%
-  );
+  background-color: var(--default);
   letter-spacing: 0.07em;
 }
 
@@ -89,7 +82,23 @@ h1 {
     margin-bottom: 1rem;
   }
 }
-.container {
+
+.listPage_background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-image: linear-gradient(
+    174deg,
+    var(--default) 2%,
+    var(--default) 46%,
+    #ffffff 46%,
+    #ffffff 100%,
+    #e8e8e8 100%
+  );
+  z-index: -20;
+}
+
+.listPage {
   margin: 3rem auto 1.5rem auto;
   padding: 0 12px;
   width: 500px;
@@ -302,3 +311,105 @@ input[type="text"]::placeholder {
 .checkbox input:checked ~ span::after {
     opacity: 1;
   }
+
+
+/* 首頁CSS設計 */
+
+.logInPage {
+  width: 100%;
+  margin: 87px 116px;
+  display: flex;
+  justify-content: center;
+}
+
+.topIcon {
+  text-align: center;
+  position: relative;
+}
+
+.correctIcon {
+  position: absolute;
+  left: 12%;
+}
+
+.rightPart {
+  margin: 50px 106px;
+}
+
+.rightPart h2 {
+  font-family: Noto Sans TC;
+  font-weight: 700;
+  font-size: 24px;
+  text-align: center;
+}
+
+.rightPart .word {
+  margin-top: 24px;
+  font-family: Noto Sans TC;
+  font-weight: 700;
+  font-size: 14px;
+  line-height:20.27px
+}
+
+.inputBox {
+  margin: 5px 0;
+  width: 100%;
+  height: 47px;
+  border-radius: 10px;
+  padding-left: 10px;
+  font-size: 14px;
+  border: none;
+}
+
+.homeInputAlert {
+  font-family: 'Noto Sans TC';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: transparent;
+}
+
+.btnGroup {
+  text-align: center;
+}
+
+.logInBtn {
+  margin: 24px auto;
+  height: 47px;
+  width: 128px;
+  border-radius: 10px;
+  padding: 12px 48px 12px 48px;
+  background: #333333;
+  color: #ffffff;
+  font-family: 'Noto Sans TC';
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+}
+
+.registBtn {
+  font-family: 'Noto Sans TC';
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 23px;
+  color: #333333;
+}
+
+@media (max-width: 575px) {
+  .logInPage {
+    display: block;
+  }
+  .downIcon {
+    display: none;
+  }
+  .correctIcon {
+    left: 7%;
+  }
+  .rightPart {
+    margin: 32px auto;
+  }
+  .rightPart h2 {
+    font-size: 20px;
+  }
+}
