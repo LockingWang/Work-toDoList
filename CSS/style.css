@@ -64,7 +64,6 @@ html {
 body {
   min-height: 100vh;
   background: #eee;
-  display: flex;
   color: var(--dark);
   background-color: var(--default);
   letter-spacing: 0.07em;
@@ -82,6 +81,8 @@ h1 {
     margin-bottom: 1rem;
   }
 }
+
+/*ToDoList頁面 CSS*/
 
 .listPage_background {
   width: 100%;
@@ -106,6 +107,47 @@ h1 {
     margin-top: 1.5rem;
   }
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin: 17px 32px;
+}
+
+.header .correctIcon {
+  left: 3%;
+}
+
+.header .headWord {
+  position: relative;
+  top: -20%;
+  left: 3%;
+}
+
+.headerBtn {
+  display: flex;
+  font-family: Noto Sans TC;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 23px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.logOutBtn {
+  font-weight: 400;
+  margin-left: 24px;
+}
+
+@media (max-width: 575px) {
+  .headerBtn .user {
+    display: none;
+  }
+  .logOutBtn {
+    margin-top: 5px;
+  }
+}
+
 .card {
   margin-bottom: 0.5rem;
   max-width: 100%;
