@@ -340,7 +340,6 @@ input[type="text"]::placeholder {
   font-family: Noto Sans TC;
   font-weight: 700;
   font-size: 24px;
-  text-align: center;
 }
 
 .rightPart .word {
@@ -411,5 +410,38 @@ input[type="text"]::placeholder {
   }
   .rightPart h2 {
     font-size: 20px;
+    text-align: center;
+  }
+}
+
+/* 註冊頁面CSS */
+
+.registPage {
+  width: 100%;
+  margin: 87px 116px;
+  display: flex;
+  justify-content: center;
+}
+
+.registPage .rightPart {
+  margin: 0 103px;
+  width: 304px;
+}
+
+.registPage .rightPart .word {
+  margin-top: 0px;
+}
+
+.registPage .logInBtn {
+  padding: 0;
+  margin-top: 0px;
+}
+
+@media (max-width: 575px) {
+  .registPage {
+    display: block;
+  }
+  .correctIcon {
+    left: 20%;
   }
 }
