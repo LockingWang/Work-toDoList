@@ -2,6 +2,7 @@
 let pageNow = "logInPage";
 let token = "";
 let userName = "";
+let todolist = [];
 const body = document.querySelector(".body");
 function checkPage(){
     if(pageNow === "logInPage" && token === ""){
@@ -85,7 +86,7 @@ function checkPage(){
             <img src="./img/ONLINE TODO LISTlogo.png" alt="headWord" class="headWord">
           </div>
           <div class="headerBtn">
-            <p class="user">王小明的待辦</p>
+            <p class="user">${userName}的待辦</p>
             <p class="logOutBtn">登出</p>
           </div>
         </div>
@@ -95,7 +96,7 @@ function checkPage(){
             <a href="#" class="btn_add">+</a>
           </div>
           <div class="card card_list">
-              
+            <p>123</p>
           </div>
         </div>
         <script src="all.js"></script>`
@@ -108,21 +109,25 @@ let loginPassword = document.querySelector(".loginPassword");
 const logInBtn = document.querySelector(".logInBtn");
 const homeInputAlert_email = document.querySelector(".homeInputAlert_email");
 const homeInputAlert_password = document.querySelector(".homeInputAlert_password");
-const logInUrl = `https://todoo.5xcamp.us/users/sign_in`;
+const apiUrl = `https://todoo.5xcamp.us`;
+
 
 function logIn(email,password){
-    axios.post(logInUrl,{
+    axios.post(`${apiUrl}/users/sign_in`,{
         "user": {
           "email": email,
           "password": password
         }
     })
     .then(res => {
+        alert("登入成功!!!")
         axios.defaults.headers.common['Authorization'] = res.headers.authorization;
         // 此段為使全域的axios都套用上授權的token。
         token = res.headers.authorization;
         pageNow = "listPage";
+        userName = res.data.nickname;
         checkPage();
+        getTodo();
     })
     .catch(error => {
         alert("帳號或密碼錯誤請重新輸入!");
@@ -130,8 +135,6 @@ function logIn(email,password){
         loginPassword.value = "";
     })
 }
-
-
 
 logInBtn.addEventListener("click",function(e){
     if(loginEmail.value == "" || loginPassword.value == ""){
@@ -151,59 +154,71 @@ logInBtn.addEventListener("click",function(e){
     };
 });
 
-// 變數專區
+// 透過API 取得todolist資料
+
+function getTodo(){
+    axios.get(`${apiUrl}/todos`)
+    .then(res => {
+        todolist = res.data.todos;
+        addList();
+    })
+    .catch(error => console.log(error.response))
+};
+
+// todolist頁面的相關JS功能
 const list = document.querySelector(".list");
-const card_list = document.querySelector(".card_list");
-let data = [];
 let tabPage = "all";
 
+
 function addList(){
+    const card_list = document.querySelector(".card_list");
     let str = "";
     let count = 0;
-    data.forEach(function(item,index){
+    todolist.forEach(function(item){
         if (tabPage == "all"){
             str += `<li>
             <label class="checkbox" for="">
-            <input type="checkbox" data-num="${index}" ${item.checked} />
+            <input type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
             <span>${item.content}</span>
             </label>
-            <a href="#" class="delete" data-num="${index}"></a>
+            <a href="#" class="delete" data-id="${item.id}"></a>
             </li>`;
-        } else if (tabPage == "undo" && item.checked == ""){
+        } else if (tabPage == "undo" && item.completed_at == null){
             str += `<li>
             <label class="checkbox" for="">
-            <input type="checkbox" data-num="${index}" ${item.checked} />
+            <input type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
             <span>${item.content}</span>
             </label>
-            <a href="#" class="delete" data-num="${index}"></a>
+            <a href="#" class="delete" data-id="${item.id}"></a>
             </li>`;
-        } else if (tabPage == "done" && item.checked == "checked"){
+        } else if (tabPage == "done" && item.checked != null){
             str += `<li>
             <label class="checkbox" for="">
-            <input type="checkbox" data-num="${index}" ${item.checked} />
+            <input type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
             <span>${item.content}</span>
             </label>
-            <a href="#" class="delete" data-num="${index}"></a>
+            <a href="#" class="delete" data-id="${item.id}"></a>
             </li>`;
         };
-        if (item.checked == "") {
+        if (item.completed_at == null) {
             count ++;
         };
     });
     if (tabPage == "all"){
-        card_list.innerHTML = `<ul class="tab">
-        <li class="active" data-tab="all">全部</li>
-        <li data-tab="undo">待完成</li>
-        <li data-tab="done">已完成</li>
+        card_list.innerHTML = `
+        <ul class="tab">
+            <li class="active" data-tab="all">全部</li>
+            <li data-tab="undo">待完成</li>
+            <li data-tab="done">已完成</li>
         </ul>
         <div class="cart_content">
-        <ul class="list">
-        ${str}
-        </ul>
-        <div class="list_footer">
-        <p>有 ${count} 個待完成項目</p>
-        <a href="#" class="clear">清除已完成項目</a>
-        </div>
+            <ul class="list">
+                ${str}
+            </ul>
+            <div class="list_footer">
+                <p>有 ${count} 個待完成項目</p>
+                <a href="#" class="clear">清除已完成項目</a>
+            </div>
         </div>`;
     } else if (tabPage == "undo"){
         card_list.innerHTML = `<ul class="tab">
@@ -238,39 +253,48 @@ function addList(){
     };
 };
 // 添加待辦功能
-const cardInput = document.querySelector(".input");
-const txt = document.querySelector(".txt");
 
-cardInput.addEventListener("click",function(e){
+body.addEventListener("click",function(e){
+    const txt = document.querySelector(".txt");
     if (e.target.getAttribute("class") == "btn_add"){
         if (txt.value.trim() == ""){
             alert("請輸入待辦事項!");
             return;
         }
-        let obj = {};
-        obj.content = txt.value.trim();
-        obj.checked = "";
-        data.push(obj);
-        tabPage = "all";
-        addList();
-        txt.value = "";
+        axios.post(`${apiUrl}/todos`,{
+            "todo": {
+              "content": txt.value.trim()
+            }
+        })
+        .then(res => {
+            tabPage = "all";
+            getTodo();
+            txt.value = "";
+            alert("新增成功!");
+        })
+        .catch(error => console.log(error.response))
     };
 });//滑鼠新增
 
-cardInput.addEventListener("keyup",function(e){
+body.addEventListener("keyup",function(e){
+    const txt = document.querySelector(".txt");
     if( e.key === "Enter"){
         if(txt.value.trim() == ""){
             alert("請輸入待辦事項!");
             return;
-        }else if(e.key == "Enter"){
-            let obj = {};
-            obj.content = txt.value.trim();
-            obj.checked = "";
-            data.push(obj);
-            tabPage = "all";
-            addList();
-            txt.value = "";
         }
+        axios.post(`${apiUrl}/todos`,{
+            "todo": {
+              "content": txt.value.trim()
+            }
+        })
+        .then(res => {
+            tabPage = "all";
+            getTodo();
+            txt.value = "";
+            alert("新增成功!");
+        })
+        .catch(error => console.log(error.response))
     }else {
         return;
     }
