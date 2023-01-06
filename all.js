@@ -1,9 +1,11 @@
-// 網頁切換內容
+// 網頁切換檢查
 let pageNow = "logInPage";
-
+let token = "";
+let userName = "";
+const body = document.querySelector(".body");
 function checkPage(){
-    if(pageNow === "logInPage"){
-        body.innerHTML = `    <div class="logInPage">
+    if(pageNow === "logInPage" && token === ""){
+        body.innerHTML = `<div class="logInPage">
         <div class="leftPart">
           <div class="topIcon">
             <img src="./img/Vectorheadicon2.png" alt="box">
@@ -18,7 +20,43 @@ function checkPage(){
           <h2>最實用的線上待辦事項服務</h2>
           <label>
             <p class="word">Email</p>
+            <input class="inputBox loginEmail" type="email" placeholder="請輸入Email">
+            <p class="homeInputAlert_email">此欄位不可為空白值</p>
+          </label>
+          <label>
+            <p class="word">密碼</p>
+            <input class="inputBox loginPassword" type="password" placeholder="請輸入密碼">
+            <p class="homeInputAlert_password">此欄位不可為空白值</p>
+          </label>
+          <div class="btnGroup">
+            <input class="logInBtn" type="button" value="登入" />
+            <p class="registBtn">註冊帳號</p>
+          </div>
+        </div>
+      </div> 
+      <script src="all.js"></script>`
+    } else if(pageNow === "registPage" && token === ""){
+        body.innerHTML = `<div class="registPage">
+        <div class="leftPart">
+          <div class="topIcon">
+            <img src="./img/Vectorheadicon2.png" alt="box">
+            <img src="./img/Vectorheadicon1.png" alt="correctIcon" class="correctIcon">
+            <img src="./img/ONLINE TODO LISTlogo.png" alt="headWord">
+          </div>
+          <div class="downIcon">
+            <img src="./img/imgheadimg.png" alt="manWithPen">
+          </div>
+        </div>
+        <div class="rightPart">
+          <h2>註冊帳號</h2>
+          <label>
+            <p class="word">Email</p>
             <input class="inputBox" type="email" placeholder="請輸入Email">
+            <p class="homeInputAlert">此欄位不可為空白值</p>
+          </label>
+          <label>
+            <p class="word">您的暱稱</p>
+            <input class="inputBox" type="text" placeholder="小明">
             <p class="homeInputAlert">此欄位不可為空白值</p>
           </label>
           <label>
@@ -26,35 +64,93 @@ function checkPage(){
             <input class="inputBox" type="password" placeholder="請輸入密碼">
             <p class="homeInputAlert">此欄位不可為空白值</p>
           </label>
+          <label>
+            <p class="word">再次輸入密碼</p>
+            <input class="inputBox" type="password" placeholder="請輸入密碼">
+            <p class="homeInputAlert">此欄位不可為空白值</p>
+          </label>
           <div class="btnGroup">
-            <input class="logInBtn" type="button" value="登入" />
-            <p class="registBtn">註冊帳號</p>
+            <input class="logInBtn" type="button" value="註冊帳號" />
+            <p class="registBtn">登入</p>
           </div>
         </div>
       </div>
       <script src="all.js"></script>`
-    }
-};
-
-// 要有ID才能轉換到個人的todolist
-let token = "";
-const body = document.querySelector(".body");
-function checkID (){
-    if (token !== ""){
+    } else if(pageNow === "listPage" && token !== ""){
         body.innerHTML = `<div class="listPage_background"></div>
+        <div class="header">
+          <div class="topIcon">
+            <img src="./img/Vectorheadicon2.png" alt="box">
+            <img src="./img/Vectorheadicon1.png" alt="correctIcon" class="correctIcon">
+            <img src="./img/ONLINE TODO LISTlogo.png" alt="headWord" class="headWord">
+          </div>
+          <div class="headerBtn">
+            <p class="user">王小明的待辦</p>
+            <p class="logOutBtn">登出</p>
+          </div>
+        </div>
         <div class="listPage">
-          <h1>TODO LIST</h1>
-            <div class="card input">
-              <input class="txt" type="text" placeholder="請輸入待辦事項" />
-              <a href="#" class="btn_add">+</a>
-            </div>
-            <div class="card card_list">
+          <div class="card input">
+            <input class="txt" type="text" placeholder="請輸入待辦事項" />
+            <a href="#" class="btn_add">+</a>
+          </div>
+          <div class="card card_list">
               
-            </div>
+          </div>
         </div>
         <script src="all.js"></script>`
     }
 };
+checkPage();
+// 登入功能
+let loginEmail = document.querySelector(".loginEmail");
+let loginPassword = document.querySelector(".loginPassword");
+const logInBtn = document.querySelector(".logInBtn");
+const homeInputAlert_email = document.querySelector(".homeInputAlert_email");
+const homeInputAlert_password = document.querySelector(".homeInputAlert_password");
+const logInUrl = `https://todoo.5xcamp.us/users/sign_in`;
+
+function logIn(email,password){
+    axios.post(logInUrl,{
+        "user": {
+          "email": email,
+          "password": password
+        }
+    })
+    .then(res => {
+        axios.defaults.headers.common['Authorization'] = res.headers.authorization;
+        // 此段為使全域的axios都套用上授權的token。
+        token = res.headers.authorization;
+        pageNow = "listPage";
+        checkPage();
+    })
+    .catch(error => {
+        alert("帳號或密碼錯誤請重新輸入!");
+        loginEmail.value = "";
+        loginPassword.value = "";
+    })
+}
+
+
+
+logInBtn.addEventListener("click",function(e){
+    if(loginEmail.value == "" || loginPassword.value == ""){
+        alert("資料填寫未齊全，請再檢查一次。");
+        if(loginEmail.value == ""){
+            homeInputAlert_email.classList.add("showRedAlert");
+        }else{
+            homeInputAlert_email.classList.remove("showRedAlert");
+        };
+        if(loginPassword.value == ""){
+            homeInputAlert_password.classList.add("showRedAlert");
+        }else {
+            homeInputAlert_password.classList.remove("showRedAlert");
+        };
+    }else {
+        logIn(loginEmail.value,loginPassword.value)
+    };
+});
+
 // 變數專區
 const list = document.querySelector(".list");
 const card_list = document.querySelector(".card_list");

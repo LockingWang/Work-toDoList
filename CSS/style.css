@@ -402,13 +402,17 @@ input[type="text"]::placeholder {
   border: none;
 }
 
-.homeInputAlert {
+.homeInputAlert_email, .homeInputAlert_password {
   font-family: 'Noto Sans TC';
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
   line-height: 20px;
   color: transparent;
+}
+
+.showRedAlert {
+  color: red;
 }
 
 .btnGroup {
