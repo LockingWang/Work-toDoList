@@ -353,14 +353,31 @@ body.addEventListener("click",function(e){
 
 // 清除已完成項目
 
-card_list.addEventListener("click",function(e){
+body.addEventListener("click",function(e){
     const clear = document.querySelector(".clear");
     if (e.target.getAttribute("class") !== "clear") {
         return;
     };
-    let undoData = data.filter(function(item){
-        return item.checked == "";
+    let doneCase = 0;
+    todolist.forEach(function(item){
+        if(item.completed_at != null){
+            doneCase ++;
+        }
     });
-    data = undoData;
-    addList();
+    
+    todolist.forEach(function(item){
+        if(item.completed_at != null){
+
+            axios.delete(`${apiUrl}/todos/${item.id}`)
+            .then(res => {
+                doneCase --;
+                if(doneCase == 0){
+                    getTodo();
+                    tabPage = "all";
+                    alert("清除成功!");
+                }
+            })
+            .catch(error => console.log(error.response))
+        }
+    });
 });
