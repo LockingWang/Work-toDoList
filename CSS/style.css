@@ -340,17 +340,17 @@ input[type="text"]::placeholder {
     transition: 0.3s ease;
   }
 
-.checkbox input:checked ~ span {
+.checkbox_done span {
     color: var(--gray);
     text-decoration: line-through;
 }
 
-.checkbox input:checked ~ span::before {
+.checkbox_done span::before {
     border-color: transparent;
     transform: translateY(-50%) scale(0);
 }
 
-.checkbox input:checked ~ span::after {
+.checkbox_done span::after {
     opacity: 1;
   }
 

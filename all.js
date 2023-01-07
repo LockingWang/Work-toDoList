@@ -103,6 +103,7 @@ function checkPage(){
     }
 };
 checkPage();
+
 // 登入功能
 let loginEmail = document.querySelector(".loginEmail");
 let loginPassword = document.querySelector(".loginPassword");
@@ -176,13 +177,23 @@ function addList(){
     let count = 0;
     todolist.forEach(function(item){
         if (tabPage == "all"){
-            str += `<li>
-            <label class="checkbox" for="">
-            <input type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
-            <span>${item.content}</span>
-            </label>
-            <a href="#" class="delete" data-id="${item.id}"></a>
-            </li>`;
+            if(item.completed_at == null){
+                str += `<li>
+                <label class="checkbox" for="">
+                <input type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
+                <span>${item.content}</span>
+                </label>
+                <a href="#" class="delete" data-id="${item.id}"></a>
+                </li>`;
+            } else {
+                str += `<li>
+                <label class="checkbox checkbox_done" for="">
+                <input type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
+                <span>${item.content}</span>
+                </label>
+                <a href="#" class="delete" data-id="${item.id}"></a>
+                </li>`;
+            }
         } else if (tabPage == "undo" && item.completed_at == null){
             str += `<li>
             <label class="checkbox" for="">
@@ -191,9 +202,9 @@ function addList(){
             </label>
             <a href="#" class="delete" data-id="${item.id}"></a>
             </li>`;
-        } else if (tabPage == "done" && item.checked != null){
+        } else if (tabPage == "done" && item.completed_at != null){
             str += `<li>
-            <label class="checkbox" for="">
+            <label class="checkbox checkbox_done" for="">
             <input type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
             <span>${item.content}</span>
             </label>
@@ -319,27 +330,23 @@ body.addEventListener("click",function(e){
 // checkbox點選標記
 //因為checkbox本身沒有value值可供篩選，所以要自己新增屬性
 
-card_list.addEventListener("click",function(e){
+body.addEventListener("click",function(e){
     if (e.target.nodeName !== "INPUT"){
         return;
     };
-    let num = e.target.dataset.num;
-    if(data[num].checked === "checked"){
-        data[num].checked = "";
-    }else if (data[num].checked !== "checked"){
-        data[num].checked = "checked";
-    }
-    addList();
+    axios.patch(`${apiUrl}/todos/${e.target.dataset.id}/toggle`,{})
+    .then(res => getTodo())
+    .catch(error => console.log(error.response))
 });
 
 //tab 轉換頁面功能
 
-card_list.addEventListener("click",function(e){
+body.addEventListener("click",function(e){
     if(e.target.dataset.tab !== "all" && e.target.dataset.tab !== "undo" && e.target.dataset.tab !== "done"){
         return;
     }else{
         tabPage = e.target.dataset.tab;
-        addList();
+        getTodo();
     };
 });
 
