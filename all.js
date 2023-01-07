@@ -304,14 +304,16 @@ body.addEventListener("keyup",function(e){
 
 // 刪除待辦功能
 
-card_list.addEventListener("click",function(e){
+body.addEventListener("click",function(e){
     if (e.target.getAttribute("class") !== "delete"){
         return;
     }
-    let num = e.target.getAttribute("data-num")
-    data.splice(num,1);
-    addList();
-    alert("刪除成功!");
+    axios.delete(`${apiUrl}/todos/${e.target.dataset.id}`)
+    .then(res => {
+        getTodo();
+        alert("刪除成功!");
+    })
+    .catch(error => console.log(error.response))
 });
 
 // checkbox點選標記
