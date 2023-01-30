@@ -96,7 +96,34 @@ function checkPage(){
             <a href="#" class="btn_add">+</a>
           </div>
           <div class="card card_list">
-            <p>123</p>
+
+            <ul class="tab">
+                <li class="active" data-tab="all">全部</li>
+                <li data-tab="undo">待完成</li>
+                <li data-tab="done">已完成</li>
+            </ul>
+            <div class="cart_content">
+                <ul class="list">
+                    <li>
+                        <label class="checkbox" for="">
+                            <input type="checkbox" data-id="123" data-completed_at="123" />
+                            <span>待辦事項1</span>
+                        </label>
+                        <a href="#" class="delete" data-id="123"></a>
+                        <a href="#" class="edit" data-id="123">編輯</a>
+                    </li>
+                    <li class="edit_li">
+                        <input class="edit_input" type="text" data-id="123" value="待辦事項2" />
+                        <input class="yes_btn" type="button" value="確認" />
+                        <input class="no_btn" type="button" value="取消" />
+                    </li>
+                </ul>
+                <div class="list_footer">
+                    <p>有 1 個待完成項目</p>
+                    <a href="#" class="clear">清除已完成項目</a>
+                </div>
+            </div>
+
           </div>
         </div>
         <script src="all.js"></script>`
@@ -178,37 +205,41 @@ function addList(){
     todolist.forEach(function(item){
         if (tabPage == "all"){
             if(item.completed_at == null){
-                str += `<li>
+                str += `<li class="ID${item.id}">
                 <label class="checkbox" for="">
-                <input type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
+                <input class="for_check" type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
                 <span>${item.content}</span>
                 </label>
                 <a href="#" class="delete" data-id="${item.id}"></a>
+                <a href="#" class="edit" data-id="${item.id}" data-content="${item.content}">編輯</a>
                 </li>`;
             } else {
-                str += `<li>
+                str += `<li class="ID${item.id}">
                 <label class="checkbox checkbox_done" for="">
-                <input type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
+                <input class="for_check" type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
                 <span>${item.content}</span>
                 </label>
                 <a href="#" class="delete" data-id="${item.id}"></a>
+                <a href="#" class="edit" data-id="${item.id}" data-content="${item.content}">編輯</a>
                 </li>`;
             }
         } else if (tabPage == "undo" && item.completed_at == null){
-            str += `<li>
+            str += `<li class="ID${item.id}">
             <label class="checkbox" for="">
-            <input type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
+            <input class="for_check" type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
             <span>${item.content}</span>
             </label>
             <a href="#" class="delete" data-id="${item.id}"></a>
+            <a href="#" class="edit" data-id="${item.id}" data-content="${item.content}">編輯</a>
             </li>`;
         } else if (tabPage == "done" && item.completed_at != null){
-            str += `<li>
+            str += `<li class="ID${item.id}">
             <label class="checkbox checkbox_done" for="">
-            <input type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
+            <input class="for_check" type="checkbox" data-id="${item.id}" data-completed_at=${item.completed_at} />
             <span>${item.content}</span>
             </label>
             <a href="#" class="delete" data-id="${item.id}"></a>
+            <a href="#" class="edit" data-id="${item.id}" data-content="${item.content}">編輯</a>
             </li>`;
         };
         if (item.completed_at == null) {
@@ -334,9 +365,11 @@ body.addEventListener("click",function(e){
     if (e.target.nodeName !== "INPUT"){
         return;
     };
-    axios.patch(`${apiUrl}/todos/${e.target.dataset.id}/toggle`,{})
-    .then(res => getTodo())
-    .catch(error => console.log(error.response))
+    if (e.target.getAttribute("class") == "for_check"){
+        axios.patch(`${apiUrl}/todos/${e.target.dataset.id}/toggle`,{})
+        .then(res => getTodo())
+        .catch(error => console.log(error.response))
+    };
 });
 
 //tab 轉換頁面功能
@@ -381,3 +414,34 @@ body.addEventListener("click",function(e){
         }
     });
 });
+
+// 編輯功能
+
+body.addEventListener("click",function(e){
+    if(e.target.getAttribute("class") != "edit"){
+        return;
+    }else{
+        const editLi = document.querySelector(`.ID${e.target.dataset.id}`);
+        editLi.innerHTML = `
+        <li class="edit_li">
+            <input class="edit_input edit_${e.target.dataset.id}" type="text" data-id="123" value="${e.target.dataset.content}" />
+            <input class="yes_btn" type="button" data-id="${e.target.dataset.id}" value="確認" />
+            <input class="no_btn" type="button" value="取消" />
+        </li>`
+    };
+});
+
+body.addEventListener("click",function(e){
+    const editContent = document.querySelector(`.edit_${e.target.dataset.id}`)
+    if(e.target.getAttribute("class") == "yes_btn"){
+        axios.put(`${apiUrl}/todos/${e.target.dataset.id}`,{
+            "todo": {
+              "content": `${editContent.value}`
+            }
+          })
+        .then(res => getTodo())
+        .catch(error => console.log(error.response))
+    }else if(e.target.getAttribute("class") == "no_btn"){
+        addList();
+    }
+})
