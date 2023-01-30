@@ -137,6 +137,12 @@ h1 {
 .logOutBtn {
   font-weight: 400;
   margin-left: 24px;
+  cursor: pointer;
+}
+
+.logOutBtn:hover {
+  font-size: larger;
+  color: blue;
 }
 
 @media (max-width: 575px) {
@@ -451,7 +457,7 @@ input[type="text"]::placeholder {
   border: none;
 }
 
-.homeInputAlert_email, .homeInputAlert_password {
+.homeInputAlert_email, .homeInputAlert_password, .registInputAlert {
   font-family: 'Noto Sans TC';
   font-style: normal;
   font-weight: 700;
@@ -468,7 +474,7 @@ input[type="text"]::placeholder {
   text-align: center;
 }
 
-.logInBtn {
+.logInBtn, .registerBTN {
   margin: 24px auto;
   height: 47px;
   width: 128px;
@@ -482,12 +488,23 @@ input[type="text"]::placeholder {
   line-height: 23px;
 }
 
-.registBtn {
+.logInBtn:hover, .registerBTN:hover {
+  color:#ffd370;
+  font-size: larger;
+}
+
+.registBtn_logInPage, .returnToLogInPage {
   font-family: 'Noto Sans TC';
   font-weight: 700;
   font-size: 16px;
   line-height: 23px;
   color: #333333;
+}
+
+.registBtn_logInPage:hover, .returnToLogInPage:hover {
+  font-size: larger;
+  color: brown;
+  cursor: pointer;
 }
 
 @media (max-width: 575px) {
@@ -527,7 +544,7 @@ input[type="text"]::placeholder {
   margin-top: 0px;
 }
 
-.registPage .logInBtn {
+.registPage .registerBTN {
   padding: 0;
   margin-top: 0px;
 }

@@ -31,7 +31,7 @@ function checkPage(){
           </label>
           <div class="btnGroup">
             <input class="logInBtn" type="button" value="登入" />
-            <p class="registBtn">註冊帳號</p>
+            <p class="registBtn_logInPage">註冊帳號</p>
           </div>
         </div>
       </div> 
@@ -52,27 +52,27 @@ function checkPage(){
           <h2>註冊帳號</h2>
           <label>
             <p class="word">Email</p>
-            <input class="inputBox" type="email" placeholder="請輸入Email">
-            <p class="homeInputAlert">此欄位不可為空白值</p>
+            <input class="inputBox registEmail" type="email" placeholder="請輸入Email">
+            <p class="registInputAlert registEmailAlert">此欄位不可為空白值</p>
           </label>
           <label>
             <p class="word">您的暱稱</p>
-            <input class="inputBox" type="text" placeholder="小明">
-            <p class="homeInputAlert">此欄位不可為空白值</p>
+            <input class="inputBox registName" type="text" placeholder="小明">
+            <p class="registInputAlert registNameAlert">此欄位不可為空白值</p>
           </label>
           <label>
             <p class="word">密碼</p>
-            <input class="inputBox" type="password" placeholder="請輸入密碼">
-            <p class="homeInputAlert">此欄位不可為空白值</p>
+            <input class="inputBox registPassword1" type="password" placeholder="請輸入密碼">
+            <p class="registInputAlert registPass1Alert">此欄位不可為空白值</p>
           </label>
           <label>
             <p class="word">再次輸入密碼</p>
-            <input class="inputBox" type="password" placeholder="請輸入密碼">
-            <p class="homeInputAlert">此欄位不可為空白值</p>
+            <input class="inputBox registPassword2" type="password" placeholder="請輸入密碼">
+            <p class="registInputAlert registPass2Alert">此欄位不可為空白值</p>
           </label>
           <div class="btnGroup">
-            <input class="logInBtn" type="button" value="註冊帳號" />
-            <p class="registBtn">登入</p>
+            <input class="registerBTN" type="button" value="註冊帳號" />
+            <p class="returnToLogInPage">返回登入頁面</p>
           </div>
         </div>
       </div>
@@ -131,13 +131,15 @@ function checkPage(){
 };
 checkPage();
 
-// 登入功能
+
+// 首頁功能
 let loginEmail = document.querySelector(".loginEmail");
 let loginPassword = document.querySelector(".loginPassword");
 const logInBtn = document.querySelector(".logInBtn");
 const homeInputAlert_email = document.querySelector(".homeInputAlert_email");
 const homeInputAlert_password = document.querySelector(".homeInputAlert_password");
 const apiUrl = `https://todoo.5xcamp.us`;
+const registBtn_logInPage = document.querySelector(".registBtn_logInPage");
 
 
 function logIn(email,password){
@@ -164,23 +166,103 @@ function logIn(email,password){
     })
 }
 
-logInBtn.addEventListener("click",function(e){
-    if(loginEmail.value == "" || loginPassword.value == ""){
-        alert("資料填寫未齊全，請再檢查一次。");
-        if(loginEmail.value == ""){
-            homeInputAlert_email.classList.add("showRedAlert");
-        }else{
-            homeInputAlert_email.classList.remove("showRedAlert");
-        };
-        if(loginPassword.value == ""){
-            homeInputAlert_password.classList.add("showRedAlert");
+body.addEventListener("click",function(e){
+    if (e.target.getAttribute("class") == "logInBtn"){
+        if(loginEmail.value == "" || loginPassword.value == ""){
+            alert("資料填寫未齊全，請再檢查一次。");
+            if(loginEmail.value == ""){
+                homeInputAlert_email.classList.add("showRedAlert");
+            }else{
+                homeInputAlert_email.classList.remove("showRedAlert");
+            };
+            if(loginPassword.value == ""){
+                homeInputAlert_password.classList.add("showRedAlert");
+            }else {
+                homeInputAlert_password.classList.remove("showRedAlert");
+            };
         }else {
-            homeInputAlert_password.classList.remove("showRedAlert");
+            logIn(loginEmail.value,loginPassword.value)
         };
-    }else {
-        logIn(loginEmail.value,loginPassword.value)
+    }
+});
+
+body.addEventListener("click",function(e){
+    if (e.target.getAttribute("class") == "registBtn_logInPage"){
+        pageNow = "registPage";
+        checkPage();
     };
 });
+
+// 註冊頁面功能
+
+function registration(email,nickname,password){
+    axios.post(`${apiUrl}/users`,{
+        "user": {
+          "email": email,
+          "nickname": nickname,
+          "password": password
+        }
+    })
+    .then(function(res){
+        alert("註冊成功! 系統將自動導回登入頁面，請使用您的帳號與密碼登入。");
+        pageNow = "logInPage";
+        checkPage();
+    })
+    .catch(error => alert(`${error.response.data.message}，原因 : ${error.response.data.error}`))
+}
+
+body.addEventListener("click",function(e){
+    const registerBTN = document.querySelector(".registerBTN");
+    const returnToLogInPage = document.querySelector(".returnToLogInPage");
+    const registEmail = document.querySelector(".registEmail");
+    const registName = document.querySelector(".registName");
+    const registPassword1 = document.querySelector(".registPassword1");
+    const registPassword2 = document.querySelector(".registPassword2");
+    const registEmailAlert = document.querySelector(".registEmailAlert");
+    const registNameAlert = document.querySelector(".registNameAlert");
+    const registPass1Alert = document.querySelector(".registPass1Alert");
+    const registPass2Alert = document.querySelector(".registPass2Alert");
+
+    if (e.target.getAttribute("class") == "registerBTN"){
+        if (registEmail.value == "" || registName.value == "" || registPassword1.value == "" || registPassword2.value == ""){
+            alert("資料填寫未齊全，麻煩再檢查一次。")
+            if(registEmail.value == ""){
+                registEmailAlert.classList.add("showRedAlert");
+            }else{
+                registEmailAlert.classList.remove("showRedAlert");
+            };
+            if(registName.value == ""){
+                registNameAlert.classList.add("showRedAlert");
+            }else{
+                registNameAlert.classList.remove("showRedAlert");
+            };
+            if(registPassword1.value == ""){
+                registPass1Alert.classList.add("showRedAlert");
+            }else{
+                registPass1Alert.classList.remove("showRedAlert");
+            };
+            if(registPassword2.value == ""){
+                registPass2Alert.classList.add("showRedAlert");
+            }else{
+                registPass2Alert.classList.remove("showRedAlert");
+            };
+        }else if (registPassword1.value != registPassword2.value){
+            alert("兩次輸入的密碼不相同，請重新確認。")
+            registEmailAlert.classList.remove("showRedAlert");
+            registNameAlert.classList.remove("showRedAlert");
+            registPass1Alert.classList.remove("showRedAlert");
+            registPass2Alert.classList.remove("showRedAlert");
+        }else {
+            registration(registEmail.value,registName.value,registPassword1.value);
+        };
+    };
+    if (e.target.getAttribute("class") == "returnToLogInPage"){
+        pageNow = "logInPage";
+        checkPage();
+    }
+});
+
+
 
 // 透過API 取得todolist資料
 
@@ -197,6 +279,16 @@ function getTodo(){
 const list = document.querySelector(".list");
 let tabPage = "all";
 
+// 登出功能
+
+body.addEventListener("click",function(e){
+    if (e.target.getAttribute("class") == "logOutBtn"){
+        token = "";
+        pageNow = "logInPage";
+        checkPage();
+        alert("您已登出。")
+    }
+})
 
 function addList(){
     const card_list = document.querySelector(".card_list");
