@@ -9,8 +9,10 @@ function checkPage(){
         body.innerHTML = `<div class="logInPage">
         <div class="leftPart">
           <div class="topIcon">
-            <img src="./img/Vectorheadicon2.png" alt="box">
-            <img src="./img/Vectorheadicon1.png" alt="correctIcon" class="correctIcon">
+            <div class="iconGroup">
+                <img src="./img/Vectorheadicon2.png" alt="box">
+                <img src="./img/Vectorheadicon1.png" alt="correctIcon" class="correctIcon">
+            </div>
             <img src="./img/ONLINE TODO LISTlogo.png" alt="headWord">
           </div>
           <div class="downIcon">

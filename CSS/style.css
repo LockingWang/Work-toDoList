@@ -414,7 +414,7 @@ input[type="text"]::placeholder {
 
 .logInPage {
   width: 100%;
-  margin: 87px 116px;
+  margin: 87px auto;
   display: flex;
   justify-content: center;
 }
@@ -422,15 +422,23 @@ input[type="text"]::placeholder {
 .topIcon {
   text-align: center;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .correctIcon {
   position: absolute;
-  left: 12%;
+  left: 10px;
+}
+
+.iconGroup {
+  position: relative;
 }
 
 .rightPart {
-  margin: 50px 106px;
+  margin-top: 50px;
+  margin-left: 50px;
 }
 
 .rightPart h2 {
@@ -507,10 +515,26 @@ input[type="text"]::placeholder {
   cursor: pointer;
 }
 
-@media (max-width: 575px) {
+@media (max-width: 768px ){
   .logInPage {
     display: block;
   }
+  .correctIcon {
+    left: 30%;
+  }
+  .downIcon {
+    text-align: center;
+  }
+  .rightPart {
+    margin: 32px auto;
+    padding: 0 50px;
+  }
+  .rightPart h2 {
+    text-align: center;
+  }
+}
+
+@media (max-width: 575px) {
   .downIcon {
     display: none;
   }
