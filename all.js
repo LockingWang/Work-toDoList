@@ -4,46 +4,50 @@ let token = "";
 let userName = "";
 let todolist = [];
 const body = document.querySelector(".body");
+
 function checkPage(){
     if(pageNow === "logInPage" && token === ""){
-        body.innerHTML = `<div class="logInPage">
+        body.innerHTML = `
+        <div class="logInPage">
+            <div class="leftPart">
+                <div class="topIcon">
+                    <div class="iconGroup">
+                        <img src="./img/Vectorheadicon2.png" alt="box">
+                        <img src="./img/Vectorheadicon1.png" alt="correctIcon" class="correctIcon">
+                    </div>
+                    <img src="./img/ONLINE TODO LISTlogo.png" alt="headWord">
+                </div>
+                <div class="downIcon">
+                    <img src="./img/imgheadimg.png" alt="manWithPen">
+                </div>
+                </div>
+            <div class="rightPart">
+                <h2>最實用的線上待辦事項服務</h2>
+                <label>
+                    <p class="word">Email</p>
+                    <input class="inputBox loginEmail" type="email" placeholder="請輸入Email">
+                    <p class="homeInputAlert_email">此欄位不可為空白值</p>
+                </label>
+                <label>
+                    <p class="word">密碼</p>
+                    <input class="inputBox loginPassword" type="password" placeholder="請輸入密碼">
+                    <p class="homeInputAlert_password">此欄位不可為空白值</p>
+                </label>
+                <div class="btnGroup">
+                    <input class="logInBtn" type="button" value="登入" />
+                    <p class="registBtn_logInPage">註冊帳號</p>
+                </div>
+            </div>
+        </div> 
+        <script src="all.js"></script>`;
+    } else if(pageNow === "registPage" && token === ""){
+        body.innerHTML = `<div class="registPage">
         <div class="leftPart">
           <div class="topIcon">
             <div class="iconGroup">
                 <img src="./img/Vectorheadicon2.png" alt="box">
                 <img src="./img/Vectorheadicon1.png" alt="correctIcon" class="correctIcon">
             </div>
-            <img src="./img/ONLINE TODO LISTlogo.png" alt="headWord">
-          </div>
-          <div class="downIcon">
-            <img src="./img/imgheadimg.png" alt="manWithPen">
-          </div>
-        </div>
-        <div class="rightPart">
-          <h2>最實用的線上待辦事項服務</h2>
-          <label>
-            <p class="word">Email</p>
-            <input class="inputBox loginEmail" type="email" placeholder="請輸入Email">
-            <p class="homeInputAlert_email">此欄位不可為空白值</p>
-          </label>
-          <label>
-            <p class="word">密碼</p>
-            <input class="inputBox loginPassword" type="password" placeholder="請輸入密碼">
-            <p class="homeInputAlert_password">此欄位不可為空白值</p>
-          </label>
-          <div class="btnGroup">
-            <input class="logInBtn" type="button" value="登入" />
-            <p class="registBtn_logInPage">註冊帳號</p>
-          </div>
-        </div>
-      </div> 
-      <script src="all.js"></script>`
-    } else if(pageNow === "registPage" && token === ""){
-        body.innerHTML = `<div class="registPage">
-        <div class="leftPart">
-          <div class="topIcon">
-            <img src="./img/Vectorheadicon2.png" alt="box">
-            <img src="./img/Vectorheadicon1.png" alt="correctIcon" class="correctIcon">
             <img src="./img/ONLINE TODO LISTlogo.png" alt="headWord">
           </div>
           <div class="downIcon">
@@ -83,8 +87,10 @@ function checkPage(){
         body.innerHTML = `<div class="listPage_background"></div>
         <div class="header">
           <div class="topIcon">
+          <div class="iconGroup">
             <img src="./img/Vectorheadicon2.png" alt="box">
             <img src="./img/Vectorheadicon1.png" alt="correctIcon" class="correctIcon">
+          </div>
             <img src="./img/ONLINE TODO LISTlogo.png" alt="headWord" class="headWord">
           </div>
           <div class="headerBtn">
@@ -153,6 +159,8 @@ function logIn(email,password){
     })
     .then(res => {
         alert("登入成功!!!")
+        loginEmail.value = "";
+        loginPassword.value = "";
         axios.defaults.headers.common['Authorization'] = res.headers.authorization;
         // 此段為使全域的axios都套用上授權的token。
         token = res.headers.authorization;

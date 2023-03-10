@@ -102,20 +102,13 @@ h1 {
 .listPage {
   margin: 3rem auto 1.5rem auto;
   padding: 0 12px;
-  width: 500px;
-  @media (max-width: 575px) {
-    margin-top: 1.5rem;
-  }
+  max-width: 500px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   margin: 17px 32px;
-}
-
-.header .correctIcon {
-  left: 3%;
 }
 
 .header .headWord {
@@ -138,6 +131,7 @@ h1 {
   font-weight: 400;
   margin-left: 24px;
   cursor: pointer;
+  width: 32px;
 }
 
 .logOutBtn:hover {
@@ -146,6 +140,11 @@ h1 {
 }
 
 @media (max-width: 575px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+  
   .headerBtn .user {
     display: none;
   }
@@ -436,18 +435,18 @@ input[type="text"]::placeholder {
   position: relative;
 }
 
-.rightPart {
+.logInPage .rightPart {
   margin-top: 50px;
   margin-left: 50px;
 }
 
-.rightPart h2 {
+.logInPage .rightPart h2 {
   font-family: Noto Sans TC;
   font-weight: 700;
   font-size: 24px;
 }
 
-.rightPart .word {
+.logInPage .rightPart .word {
   margin-top: 24px;
   font-family: Noto Sans TC;
   font-weight: 700;
@@ -525,11 +524,11 @@ input[type="text"]::placeholder {
   .downIcon {
     text-align: center;
   }
-  .rightPart {
+  .logInPage .rightPart {
     margin: 32px auto;
     padding: 0 50px;
   }
-  .rightPart h2 {
+  .logInPage .rightPart h2 {
     text-align: center;
   }
 }
@@ -554,23 +553,47 @@ input[type="text"]::placeholder {
 
 .registPage {
   width: 100%;
-  margin: 87px 116px;
+  margin: 87px auto;
   display: flex;
   justify-content: center;
 }
 
 .registPage .rightPart {
-  margin: 0 103px;
   width: 304px;
+  margin-left: 50px;
+}
+
+.registPage .rightPart h2 {
+  font-family: Noto Sans TC;
+  font-weight: 700;
+  font-size: 24px;
 }
 
 .registPage .rightPart .word {
-  margin-top: 0px;
+  font-family: Noto Sans TC;
+  font-weight: 700;
+  font-size: 14px;
+  line-height:20.27px
 }
 
 .registPage .registerBTN {
   padding: 0;
   margin-top: 0px;
+}
+
+@media (max-width: 768px) {
+  .registPage {
+    display: block;
+  }
+  
+  .registPage .rightPart {
+    margin: 32px auto;
+    padding: 0 50px;
+    width: 80%;
+  }
+  .registPage .rightPart h2 {
+    text-align: center;
+  }
 }
 
 @media (max-width: 575px) {
@@ -579,5 +602,8 @@ input[type="text"]::placeholder {
   }
   .correctIcon {
     left: 20%;
+  }
+  .registPage .rightPart {
+    width: 100%;
   }
 }
